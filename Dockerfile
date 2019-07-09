@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM python:3.6
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -18,9 +18,10 @@ ENV ELECTRUM_VERSION $VERSION
 ENV ELECTRUM_USER electrum
 ENV ELECTRUM_PASSWORD electrumz
 ENV ELECTRUM_HOME /home/$ELECTRUM_USER
-
-RUN adduser -D $ELECTRUM_USER && \
-	pip3 install https://download.electrum.org/${ELECTRUM_VERSION}/Electrum-${ELECTRUM_VERSION}.tar.gz
+RUN apt-get update -y
+RUN apt-get install -y python3-pyqt5
+RUN pip3 install https://github.com/Electron-Cash/Electron-Cash/releases/download/4.0.7/Electron-Cash-4.0.7.tar.gz
+RUN useradd -ms /bin/bash $ELECTRUM_USER
 
 RUN mkdir -p ${ELECTRUM_HOME}/.electrum/ /data/ && \
 	ln -sf ${ELECTRUM_HOME}/.electrum/ /data/ && \
@@ -34,4 +35,4 @@ COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 7000
-CMD ["electrum"]
+CMD ["electron-cash"]

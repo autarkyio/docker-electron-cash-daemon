@@ -3,7 +3,7 @@ services:
   electrum:
     build: .
     ports:
-      - 127.0.0.1:7000:7000
+      - 127.0.0.1:7001:7000
     environment:
       ELECTRUM_USER: electrum
       ELECTRUM_PASSWORD: changeme
